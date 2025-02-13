@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 
 const zodiacSigns = [
   { name: 'Aries', symbol: '♈', period: 'Mar 21 - Apr 19' },
@@ -34,6 +34,17 @@ const corporateHoroscopes = {
 
 export default function Home() {
   const [selectedSign, setSelectedSign] = useState<string | null>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
+
+  const openHoroscope = (sign: string) => {
+    setSelectedSign(sign)
+    dialogRef.current?.showModal()
+  }
+
+  const closeHoroscope = () => {
+    dialogRef.current?.close()
+    setSelectedSign(null)
+  }
 
   return (
     <main className="min-h-screen bg-[#0a0a1f] text-blue-100 p-8">
@@ -52,12 +63,8 @@ export default function Home() {
         {zodiacSigns.map((sign) => (
           <button
             key={sign.name}
-            onClick={() => setSelectedSign(sign.name)}
-            className={`p-6 rounded-lg ${
-              selectedSign === sign.name
-                ? 'bg-blue-900 border-2 border-blue-400'
-                : 'bg-[#1a1a3a] hover:bg-blue-900/50'
-            } transition-all duration-300 text-center group`}
+            onClick={() => openHoroscope(sign.name)}
+            className="p-6 rounded-lg bg-[#1a1a3a] hover:bg-blue-900/50 transition-all duration-300 text-center group"
           >
             <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
               {sign.symbol}
@@ -68,20 +75,50 @@ export default function Home() {
         ))}
       </div>
 
-      {/* Horoscope Display */}
-      {selectedSign && (
-        <div className="max-w-2xl mx-auto">
-          <div className="bg-[#1a1a3a] p-8 rounded-lg shadow-lg border border-blue-500/20">
-            <div className="text-center mb-4">
-              <span className="text-4xl">{zodiacSigns.find(s => s.name === selectedSign)?.symbol}</span>
-              <h2 className="text-2xl font-bold text-blue-300 mt-2">{selectedSign}</h2>
+      {/* Horoscope Dialog */}
+      <dialog
+        ref={dialogRef}
+        className="backdrop:bg-black/60 backdrop:backdrop-blur-sm bg-transparent p-0 rounded-xl max-w-2xl w-full mx-auto open:animate-fade-in"
+        onClick={(e) => {
+          if (e.target === dialogRef.current) closeHoroscope()
+        }}
+      >
+        {selectedSign && (
+          <div className="bg-[#1a1a3a] p-8 rounded-xl shadow-lg border border-blue-500/20 relative">
+            <button
+              onClick={closeHoroscope}
+              className="absolute top-4 right-4 text-blue-300 hover:text-blue-100 transition-colors"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
+              </svg>
+            </button>
+            <div className="text-center mb-6">
+              <span className="text-5xl block mb-3">
+                {zodiacSigns.find(s => s.name === selectedSign)?.symbol}
+              </span>
+              <h2 className="text-2xl font-bold text-blue-300">{selectedSign}</h2>
+              <div className="text-sm text-blue-400 mt-1">
+                {zodiacSigns.find(s => s.name === selectedSign)?.period}
+              </div>
             </div>
             <p className="text-lg leading-relaxed text-blue-100">
               {corporateHoroscopes[selectedSign as keyof typeof corporateHoroscopes]}
             </p>
           </div>
-        </div>
-      )}
+        )}
+      </dialog>
 
       {/* Footer */}
       <footer className="text-center mt-12 text-blue-400/60 text-sm">
