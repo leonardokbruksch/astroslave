@@ -46,6 +46,17 @@ export default function Home() {
     setSelectedSign(null)
   }
 
+  // Function to pick a random sign and open the dialog
+  const openRandomSign = () => {
+    const randomIndex = Math.floor(Math.random() * zodiacSigns.length)
+    const randomSign = zodiacSigns[randomIndex]
+    openHoroscope(randomSign.name)
+  }
+
+  // The actual center for a 220x220 viewBox is (110, 110)
+  const cx = 110
+  const cy = 110
+
   return (
     <main className="min-h-screen bg-[#0a0a1f] text-blue-100 flex flex-col items-center justify-center p-8">
       {/* Header */}
@@ -58,7 +69,7 @@ export default function Home() {
         </p>
       </div>
 
-{/* Zodiac Donut Wheel */}
+      {/* Zodiac Donut Wheel */}
       <div className="relative w-[400px] h-[400px]">
         <svg viewBox="0 0 220 220" className="absolute left-0 top-0 w-full h-full">
           <defs>
@@ -67,15 +78,15 @@ export default function Home() {
               const startAngle = (index / totalSigns) * 2 * Math.PI
               const endAngle = ((index + 1) / totalSigns) * 2 * Math.PI
 
-              const textArcRadius = 85 // Adjust text arc radius (outside the donut)
+              const textArcRadius = 85
 
-              // Calculate points for arc path
-              const x1 = 100 + textArcRadius * Math.cos(startAngle)
-              const y1 = 100 + textArcRadius * Math.sin(startAngle)
-              const x2 = 100 + textArcRadius * Math.cos(endAngle)
-              const y2 = 100 + textArcRadius * Math.sin(endAngle)
+              // Use cx, cy instead of 100, 100
+              const x1 = cx + textArcRadius * Math.cos(startAngle)
+              const y1 = cy + textArcRadius * Math.sin(startAngle)
+              const x2 = cx + textArcRadius * Math.cos(endAngle)
+              const y2 = cy + textArcRadius * Math.sin(endAngle)
 
-              const largeArcFlag = 0 // Ensures the arc spans correctly
+              const largeArcFlag = 0
 
               return (
                 <path
@@ -96,23 +107,21 @@ export default function Home() {
 
             const outerRadius = 80
             const innerRadius = 40
-            const textRadius = (outerRadius + innerRadius) / 2 + 5 // Center text better
+            const textRadius = (outerRadius + innerRadius) / 2 + 5
 
-            // Calculate outer arc points
-            const x1 = 100 + outerRadius * Math.cos(angle)
-            const y1 = 100 + outerRadius * Math.sin(angle)
-            const x2 = 100 + outerRadius * Math.cos(nextAngle)
-            const y2 = 100 + outerRadius * Math.sin(nextAngle)
+            // Donut arcs
+            const x1 = cx + outerRadius * Math.cos(angle)
+            const y1 = cy + outerRadius * Math.sin(angle)
+            const x2 = cx + outerRadius * Math.cos(nextAngle)
+            const y2 = cy + outerRadius * Math.sin(nextAngle)
+            const x3 = cx + innerRadius * Math.cos(nextAngle)
+            const y3 = cy + innerRadius * Math.sin(nextAngle)
+            const x4 = cx + innerRadius * Math.cos(angle)
+            const y4 = cy + innerRadius * Math.sin(angle)
 
-            // Calculate inner arc points
-            const x3 = 100 + innerRadius * Math.cos(nextAngle)
-            const y3 = 100 + innerRadius * Math.sin(nextAngle)
-            const x4 = 100 + innerRadius * Math.cos(angle)
-            const y4 = 100 + innerRadius * Math.sin(angle)
-
-            // Calculate symbol positioning
-            const textX = 100 + textRadius * Math.cos((angle + nextAngle) / 2)
-            const textY = 100 + textRadius * Math.sin((angle + nextAngle) / 2)
+            // Symbol position
+            const textX = cx + textRadius * Math.cos((angle + nextAngle) / 2)
+            const textY = cy + textRadius * Math.sin((angle + nextAngle) / 2)
 
             return (
               <g
@@ -156,6 +165,16 @@ export default function Home() {
             )
           })}
         </svg>
+
+        {/* Center "?" Button */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+          <button
+            onClick={openRandomSign}
+            className="w-28 h-28 bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-white rounded-full text-2xl font-bold flex items-center justify-center hover:scale-105 transition-transform"
+          >
+            ?
+          </button>
+        </div>
       </div>
 
       {/* Horoscope Dialog */}
@@ -192,7 +211,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="text-center mt-12 text-blue-400/60 text-sm">
-        <p>Alignment of corporate stars may vary. Past performance is not indicative of future micromanagement.</p> 
+        <p>Alignment of corporate stars may vary. Past performance is not indicative of future micromanagement.</p>
         <p>Breaking the shackles of corporate imprisonment may result in benefitial side effects.</p>
       </footer>
     </main>
