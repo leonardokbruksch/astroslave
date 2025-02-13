@@ -54,12 +54,12 @@ export default function Home() {
           ASTRO SLAVE
         </h1>
         <p className="text-blue-300 text-xl">
-          Your corporate destiny, written in the fluorescent lights above
+          Your corporate destiny, written by spiritually ascended stakeholders
         </p>
       </div>
 
-      {/* Zodiac Donut Wheel */}
-      <div className="relative w-[400px] h-[400px]">
+{/* Zodiac Donut Wheel */}
+<div className="relative w-[400px] h-[400px]">
         <svg viewBox="0 0 200 200" className="absolute left-0 top-0 w-full h-full">
           {zodiacSigns.map((sign, index) => {
             const totalSigns = zodiacSigns.length
@@ -68,6 +68,7 @@ export default function Home() {
 
             const outerRadius = 80
             const innerRadius = 40
+            const textRadius = (outerRadius + innerRadius) / 2 + 5 // Center text better
 
             // Calculate outer arc points
             const x1 = 100 + outerRadius * Math.cos(angle)
@@ -81,8 +82,16 @@ export default function Home() {
             const x4 = 100 + innerRadius * Math.cos(angle)
             const y4 = 100 + innerRadius * Math.sin(angle)
 
+            // Calculate symbol positioning
+            const textX = 100 + textRadius * Math.cos((angle + nextAngle) / 2)
+            const textY = 100 + textRadius * Math.sin((angle + nextAngle) / 2)
+
             return (
-              <g key={sign.name}>
+              <g
+                key={sign.name}
+                className="group cursor-pointer transition-all duration-300"
+                onClick={() => openHoroscope(sign.name)}
+              >
                 {/* Donut Segment */}
                 <path
                   d={`M ${x1},${y1}
@@ -93,19 +102,18 @@ export default function Home() {
                   fill="rgba(26,26,58,0.8)"
                   stroke="rgba(0, 102, 255, 0.5)"
                   strokeWidth="0.5"
-                  className="hover:fill-blue-900 cursor-pointer transition-all duration-300"
-                  onClick={() => openHoroscope(sign.name)}
+                  className="group-hover:fill-blue-900 transition-all duration-300"
                 />
 
-                {/* Zodiac Symbol */}
+                {/* Zodiac Symbol (Centered Correctly) */}
                 <text
-                  x={100 + (innerRadius + outerRadius) / 2 * Math.cos((angle + nextAngle) / 2)}
-                  y={100 + (innerRadius + outerRadius) / 2 * Math.sin((angle + nextAngle) / 2)}
+                  x={textX}
+                  y={textY}
                   textAnchor="middle"
-                  fontSize="16"
+                  fontSize="18"
                   fill="white"
-                  className="cursor-pointer"
-                  onClick={() => openHoroscope(sign.name)}
+                  dominantBaseline="middle"
+                  className="pointer-events-none"
                 >
                   {sign.symbol}
                 </text>
@@ -114,6 +122,38 @@ export default function Home() {
           })}
         </svg>
       </div>
+
+      {/* Horoscope Dialog */}
+      <dialog
+        ref={dialogRef}
+        className="backdrop:bg-black/60 backdrop:backdrop-blur-sm bg-transparent p-0 rounded-xl max-w-2xl w-full mx-auto open:animate-fade-in"
+        onClick={(e) => {
+          if (e.target === dialogRef.current) closeHoroscope()
+        }}
+      >
+        {selectedSign && (
+          <div className="bg-[#1a1a3a] p-8 rounded-xl shadow-lg border border-blue-500/20 relative">
+            <button
+              onClick={closeHoroscope}
+              className="absolute top-4 right-4 text-blue-300 hover:text-blue-100 transition-colors"
+            >
+              ✖
+            </button>
+            <div className="text-center mb-6">
+              <span className="text-5xl block mb-3">
+                {zodiacSigns.find(s => s.name === selectedSign)?.symbol}
+              </span>
+              <h2 className="text-2xl font-bold text-blue-300">{selectedSign}</h2>
+              <div className="text-sm text-blue-400 mt-1">
+                {zodiacSigns.find(s => s.name === selectedSign)?.period}
+              </div>
+            </div>
+            <p className="text-lg leading-relaxed text-blue-100">
+              {corporateHoroscopes[selectedSign as keyof typeof corporateHoroscopes]}
+            </p>
+          </div>
+        )}
+      </dialog>
 
       {/* Footer */}
       <footer className="text-center mt-12 text-blue-400/60 text-sm">
