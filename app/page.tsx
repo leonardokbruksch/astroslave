@@ -29,7 +29,7 @@ const corporateHoroscopes = {
   Sagittarius: "Your optimism will be tested when you realize 'unlimited PTO' actually means 'never take a vacation'.",
   Capricorn: "Your career path is clear as day: straight up the corporate ladder... Oh wait, that's just the emergency exit sign.",
   Aquarius: "Innovation is your strength this week! Perfect timing for suggesting revolutionary ideas that will be shut down for being 'too outside the box'.",
-  Pisces: "Your intuition is strong - you'll sense a team building exercise coming. Quick, schedule a dentist appointment!"
+  Pisces: "Your intuition is strong - you'll sense a team-building exercise coming. Quick, schedule a dentist appointment!"
 }
 
 export default function Home() {
@@ -47,7 +47,7 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-[#0a0a1f] text-blue-100 p-8">
+    <main className="min-h-screen bg-[#0a0a1f] text-blue-100 flex flex-col items-center justify-center p-8">
       {/* Header */}
       <div className="text-center mb-12">
         <h1 className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-transparent bg-clip-text mb-4">
@@ -58,67 +58,62 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Zodiac Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-        {zodiacSigns.map((sign) => (
-          <button
-            key={sign.name}
-            onClick={() => openHoroscope(sign.name)}
-            className="p-6 rounded-lg bg-[#1a1a3a] hover:bg-blue-900/50 transition-all duration-300 text-center group"
-          >
-            <div className="text-4xl mb-2 group-hover:scale-110 transition-transform">
-              {sign.symbol}
-            </div>
-            <div className="text-xl font-semibold">{sign.name}</div>
-            <div className="text-sm text-blue-300">{sign.period}</div>
-          </button>
-        ))}
-      </div>
+      {/* Zodiac Donut Wheel */}
+      <div className="relative w-[400px] h-[400px]">
+        <svg viewBox="0 0 200 200" className="absolute left-0 top-0 w-full h-full">
+          {zodiacSigns.map((sign, index) => {
+            const totalSigns = zodiacSigns.length
+            const angle = (index / totalSigns) * 2 * Math.PI
+            const nextAngle = ((index + 1) / totalSigns) * 2 * Math.PI
 
-      {/* Horoscope Dialog */}
-      <dialog
-        ref={dialogRef}
-        className="backdrop:bg-black/60 backdrop:backdrop-blur-sm bg-transparent p-0 rounded-xl max-w-2xl w-full mx-auto open:animate-fade-in"
-        onClick={(e) => {
-          if (e.target === dialogRef.current) closeHoroscope()
-        }}
-      >
-        {selectedSign && (
-          <div className="bg-[#1a1a3a] p-8 rounded-xl shadow-lg border border-blue-500/20 relative">
-            <button
-              onClick={closeHoroscope}
-              className="absolute top-4 right-4 text-blue-300 hover:text-blue-100 transition-colors"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
+            const outerRadius = 80
+            const innerRadius = 40
+
+            // Calculate outer arc points
+            const x1 = 100 + outerRadius * Math.cos(angle)
+            const y1 = 100 + outerRadius * Math.sin(angle)
+            const x2 = 100 + outerRadius * Math.cos(nextAngle)
+            const y2 = 100 + outerRadius * Math.sin(nextAngle)
+
+            // Calculate inner arc points
+            const x3 = 100 + innerRadius * Math.cos(nextAngle)
+            const y3 = 100 + innerRadius * Math.sin(nextAngle)
+            const x4 = 100 + innerRadius * Math.cos(angle)
+            const y4 = 100 + innerRadius * Math.sin(angle)
+
+            return (
+              <g key={sign.name}>
+                {/* Donut Segment */}
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
+                  d={`M ${x1},${y1}
+                      A ${outerRadius},${outerRadius} 0 0,1 ${x2},${y2}
+                      L ${x3},${y3}
+                      A ${innerRadius},${innerRadius} 0 0,0 ${x4},${y4}
+                      Z`}
+                  fill="rgba(26,26,58,0.8)"
+                  stroke="rgba(0, 102, 255, 0.5)"
+                  strokeWidth="0.5"
+                  className="hover:fill-blue-900 cursor-pointer transition-all duration-300"
+                  onClick={() => openHoroscope(sign.name)}
                 />
-              </svg>
-            </button>
-            <div className="text-center mb-6">
-              <span className="text-5xl block mb-3">
-                {zodiacSigns.find(s => s.name === selectedSign)?.symbol}
-              </span>
-              <h2 className="text-2xl font-bold text-blue-300">{selectedSign}</h2>
-              <div className="text-sm text-blue-400 mt-1">
-                {zodiacSigns.find(s => s.name === selectedSign)?.period}
-              </div>
-            </div>
-            <p className="text-lg leading-relaxed text-blue-100">
-              {corporateHoroscopes[selectedSign as keyof typeof corporateHoroscopes]}
-            </p>
-          </div>
-        )}
-      </dialog>
+
+                {/* Zodiac Symbol */}
+                <text
+                  x={100 + (innerRadius + outerRadius) / 2 * Math.cos((angle + nextAngle) / 2)}
+                  y={100 + (innerRadius + outerRadius) / 2 * Math.sin((angle + nextAngle) / 2)}
+                  textAnchor="middle"
+                  fontSize="16"
+                  fill="white"
+                  className="cursor-pointer"
+                  onClick={() => openHoroscope(sign.name)}
+                >
+                  {sign.symbol}
+                </text>
+              </g>
+            )
+          })}
+        </svg>
+      </div>
 
       {/* Footer */}
       <footer className="text-center mt-12 text-blue-400/60 text-sm">
