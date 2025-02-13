@@ -59,8 +59,36 @@ export default function Home() {
       </div>
 
 {/* Zodiac Donut Wheel */}
-<div className="relative w-[400px] h-[400px]">
-        <svg viewBox="0 0 200 200" className="absolute left-0 top-0 w-full h-full">
+      <div className="relative w-[400px] h-[400px]">
+        <svg viewBox="0 0 220 220" className="absolute left-0 top-0 w-full h-full">
+          <defs>
+            {zodiacSigns.map((sign, index) => {
+              const totalSigns = zodiacSigns.length
+              const startAngle = (index / totalSigns) * 2 * Math.PI
+              const endAngle = ((index + 1) / totalSigns) * 2 * Math.PI
+
+              const textArcRadius = 85 // Adjust text arc radius (outside the donut)
+
+              // Calculate points for arc path
+              const x1 = 100 + textArcRadius * Math.cos(startAngle)
+              const y1 = 100 + textArcRadius * Math.sin(startAngle)
+              const x2 = 100 + textArcRadius * Math.cos(endAngle)
+              const y2 = 100 + textArcRadius * Math.sin(endAngle)
+
+              const largeArcFlag = 0 // Ensures the arc spans correctly
+
+              return (
+                <path
+                  key={`text-path-${sign.name}`}
+                  id={`arc-${index}`}
+                  d={`M ${x1} ${y1} A ${textArcRadius} ${textArcRadius} 0 ${largeArcFlag} 1 ${x2} ${y2}`}
+                  fill="none"
+                  stroke="transparent"
+                />
+              )
+            })}
+          </defs>
+
           {zodiacSigns.map((sign, index) => {
             const totalSigns = zodiacSigns.length
             const angle = (index / totalSigns) * 2 * Math.PI
@@ -105,7 +133,7 @@ export default function Home() {
                   className="group-hover:fill-blue-900 transition-all duration-300"
                 />
 
-                {/* Zodiac Symbol (Centered Correctly) */}
+                {/* Zodiac Symbol */}
                 <text
                   x={textX}
                   y={textY}
@@ -116,6 +144,13 @@ export default function Home() {
                   className="pointer-events-none"
                 >
                   {sign.symbol}
+                </text>
+
+                {/* Zodiac Name (Warped on Outer Arc) */}
+                <text fill="white" fontSize="6.5">
+                  <textPath href={`#arc-${index}`} startOffset="50%" textAnchor="middle">
+                    {sign.name}
+                  </textPath>
                 </text>
               </g>
             )
