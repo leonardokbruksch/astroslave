@@ -157,7 +157,8 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="text-center mt-12 text-blue-400/60 text-sm">
-        <p>Alignment of corporate stars may vary. Past performance is not indicative of future micromanagement.</p>
+        <p>Alignment of corporate stars may vary. Past performance is not indicative of future micromanagement.</p> 
+        <p>Breaking the shackles of corporate imprisonment may result in benefitial side effects.</p>
       </footer>
     </main>
   )
