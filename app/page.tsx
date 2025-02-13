@@ -111,15 +111,14 @@ export default function Home() {
         </div>
         {/* Zodiac Donut Wheel */}
         <motion.div
-          className="relative mx-auto"
-          style={{ width: "400px", height: "400px" }}
+          className="relative w-[300px] h-[300px] sm:w-[350px] sm:h-[350px] md:w-[400px] md:h-[400px] mx-auto mt-8"
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
         >
           <svg
             viewBox="0 0 220 220"
-            className="absolute left-0 top-0 w-full h-full"
+            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full"
           >
             <defs>
               {zodiacSigns.map((sign, index) => {
