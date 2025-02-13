@@ -1,126 +1,141 @@
-'use client'
+"use client";
 
-import React, { useState, useRef } from 'react'
-import { motion } from 'framer-motion'
-import StarryBackground from './components/StarryBackground'
+import React, { useState, useRef } from "react";
+import { motion } from "framer-motion";
+import StarryBackground from "./components/StarryBackground";
 
 const zodiacSigns = [
-  { name: 'Aries', symbol: '♈', period: 'Mar 21 - Apr 19' },
-  { name: 'Taurus', symbol: '♉', period: 'Apr 20 - May 20' },
-  { name: 'Gemini', symbol: '♊', period: 'May 21 - Jun 20' },
-  { name: 'Cancer', symbol: '♋', period: 'Jun 21 - Jul 22' },
-  { name: 'Leo', symbol: '♌', period: 'Jul 23 - Aug 22' },
-  { name: 'Virgo', symbol: '♍', period: 'Aug 23 - Sep 22' },
-  { name: 'Libra', symbol: '♎', period: 'Sep 23 - Oct 22' },
-  { name: 'Scorpio', symbol: '♏', period: 'Oct 23 - Nov 21' },
-  { name: 'Sagittarius', symbol: '♐', period: 'Nov 22 - Dec 21' },
-  { name: 'Capricorn', symbol: '♑', period: 'Dec 22 - Jan 19' },
-  { name: 'Aquarius', symbol: '♒', period: 'Jan 20 - Feb 18' },
-  { name: 'Pisces', symbol: '♓', period: 'Feb 19 - Mar 20' },
-]
+  { name: "Aries", symbol: "♈", period: "Mar 21 - Apr 19" },
+  { name: "Taurus", symbol: "♉", period: "Apr 20 - May 20" },
+  { name: "Gemini", symbol: "♊", period: "May 21 - Jun 20" },
+  { name: "Cancer", symbol: "♋", period: "Jun 21 - Jul 22" },
+  { name: "Leo", symbol: "♌", period: "Jul 23 - Aug 22" },
+  { name: "Virgo", symbol: "♍", period: "Aug 23 - Sep 22" },
+  { name: "Libra", symbol: "♎", period: "Sep 23 - Oct 22" },
+  { name: "Scorpio", symbol: "♏", period: "Oct 23 - Nov 21" },
+  { name: "Sagittarius", symbol: "♐", period: "Nov 22 - Dec 21" },
+  { name: "Capricorn", symbol: "♑", period: "Dec 22 - Jan 19" },
+  { name: "Aquarius", symbol: "♒", period: "Jan 20 - Feb 18" },
+  { name: "Pisces", symbol: "♓", period: "Feb 19 - Mar 20" },
+];
 
 const corporateHoroscopes = {
-  Aries: "Your assertiveness will be mistaken for 'not being a team player'. Mercury retrograde suggests it's time to write more emails with 'per my last email' to assert dominance.",
-  Taurus: "The alignment of Venus indicates your standing desk budget request will finally be approved. Unfortunately, Saturn's position means it's actually a cardboard box.",
-  Gemini: "Your multitasking skills will peak this week - perfect timing for when your boss assigns you three people's jobs with no pay increase.",
-  Cancer: "The moon's position suggests excellent emotional intelligence this week. Use it to decode what 'let's circle back' really means in your meetings.",
+  Aries:
+    "Your assertiveness will be mistaken for 'not being a team player'. Mercury retrograde suggests it's time to write more emails with 'per my last email' to assert dominance.",
+  Taurus:
+    "The alignment of Venus indicates your standing desk budget request will finally be approved. Unfortunately, Saturn's position means it's actually a cardboard box.",
+  Gemini:
+    "Your multitasking skills will peak this week - perfect timing for when your boss assigns you three people's jobs with no pay increase.",
+  Cancer:
+    "The moon's position suggests excellent emotional intelligence this week. Use it to decode what 'let's circle back' really means in your meetings.",
   Leo: "Jupiter aligns perfectly for leadership opportunities! Translation: You'll be voluntold to lead the office birthday committee.",
-  Virgo: "Your attention to detail will save a major project! But Mars in retrograde means someone else will take credit in the all-hands meeting.",
-  Libra: "The stars suggest great balance this week - between your actual job and your side hustle because inflation is hitting hard.",
-  Scorpio: "Your mysterious aura will serve you well when you need to hide from impromptu Zoom calls. Pro tip: 'Internet issues' is still a classic.",
-  Sagittarius: "Your optimism will be tested when you realize 'unlimited PTO' actually means 'never take a vacation'.",
-  Capricorn: "Your career path is clear as day: straight up the corporate ladder... Oh wait, that's just the emergency exit sign.",
-  Aquarius: "Innovation is your strength this week! Perfect timing for suggesting revolutionary ideas that will be shut down for being 'too outside the box'.",
-  Pisces: "Your intuition is strong - you'll sense a team-building exercise coming. Quick, schedule a dentist appointment!"
-}
+  Virgo:
+    "Your attention to detail will save a major project! But Mars in retrograde means someone else will take credit in the all-hands meeting.",
+  Libra:
+    "The stars suggest great balance this week - between your actual job and your side hustle because inflation is hitting hard.",
+  Scorpio:
+    "Your mysterious aura will serve you well when you need to hide from impromptu Zoom calls. Pro tip: 'Internet issues' is still a classic.",
+  Sagittarius:
+    "Your optimism will be tested when you realize 'unlimited PTO' actually means 'never take a vacation'.",
+  Capricorn:
+    "Your career path is clear as day: straight up the corporate ladder... Oh wait, that's just the emergency exit sign.",
+  Aquarius:
+    "Innovation is your strength this week! Perfect timing for suggesting revolutionary ideas that will be shut down for being 'too outside the box'.",
+  Pisces:
+    "Your intuition is strong - you'll sense a team-building exercise coming. Quick, schedule a dentist appointment!",
+};
 
 export default function Home() {
-  const [selectedSign, setSelectedSign] = useState<string | null>(null)
-  const dialogRef = useRef<HTMLDialogElement>(null)
+  const [selectedSign, setSelectedSign] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
 
   const openHoroscope = (sign: string) => {
-    setSelectedSign(sign)
-    dialogRef.current?.showModal()
-  }
+    setSelectedSign(sign);
+    dialogRef.current?.showModal();
+  };
 
   const closeHoroscope = () => {
-    dialogRef.current?.close()
-    setSelectedSign(null)
-  }
+    dialogRef.current?.close();
+    setSelectedSign(null);
+  };
 
   // Function to pick a random sign and open the dialog
   const openRandomSign = () => {
-    const randomIndex = Math.floor(Math.random() * zodiacSigns.length)
-    const randomSign = zodiacSigns[randomIndex]
-    openHoroscope(randomSign.name)
-  }
+    const randomIndex = Math.floor(Math.random() * zodiacSigns.length);
+    const randomSign = zodiacSigns[randomIndex];
+    openHoroscope(randomSign.name);
+  };
 
   // The actual center for a 220x220 viewBox is (110, 110)
-  const cx = 110
-  const cy = 110
+  const cx = 110;
+  const cy = 110;
 
   return (
     <main className="min-h-screen text-blue-100 flex flex-col items-center justify-center p-8 relative">
       <StarryBackground />
-      
+
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-6xl mx-auto">
         {/* Header */}
-  <div className="flex items-center justify-between w-full">
-    {/* Text Content - Centered */}
-    <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
-      <motion.h1 
-        className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-transparent bg-clip-text mb-4"
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease: "easeOut" }}
-      >
-        ASTRO SLAVE
-      </motion.h1>
-      <motion.p 
-        className="text-blue-300 text-xl"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-      >
-        Your corporate destiny, written by spiritually ascended stakeholders
-      </motion.p>
-    </div>
+        <div className="flex flex-col items-center w-full text-center">
+          {/* Text Content - Centered */}
+          <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+            <motion.h1
+              className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-transparent bg-clip-text mb-4"
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
+            >
+              ASTRO SLAVE
+            </motion.h1>
+            <motion.p
+              className="text-blue-300 text-xl"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3, duration: 0.8 }}
+            >
+              Your corporate destiny, written by spiritually ascended
+              stakeholders
+            </motion.p>
+          </div>
 
-    {/* Circular GIF - Aligned to Right */}
-    <motion.img 
-      src="/chains.gif" 
-      alt="Animated GIF"
-      className="w-24 h-24 rounded-full object-cover shadow-lg"
-      initial={{ opacity: 0, scale: 0.8 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-    />
-  </div>
-          {/* Zodiac Donut Wheel */}
-        <motion.div 
+          {/* Circular GIF - Aligned to Right */}
+          <motion.img
+            src="/chains.gif"
+            alt="Animated GIF"
+            className="w-24 h-24 rounded-full object-cover shadow-lg"
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+          />
+        </div>
+        {/* Zodiac Donut Wheel */}
+        <motion.div
           className="relative mx-auto"
-          style={{ width: '400px', height: '400px' }}
+          style={{ width: "400px", height: "400px" }}
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
         >
-          <svg viewBox="0 0 220 220" className="absolute left-0 top-0 w-full h-full">
+          <svg
+            viewBox="0 0 220 220"
+            className="absolute left-0 top-0 w-full h-full"
+          >
             <defs>
               {zodiacSigns.map((sign, index) => {
-                const totalSigns = zodiacSigns.length
-                const startAngle = (index / totalSigns) * 2 * Math.PI
-                const endAngle = ((index + 1) / totalSigns) * 2 * Math.PI
+                const totalSigns = zodiacSigns.length;
+                const startAngle = (index / totalSigns) * 2 * Math.PI;
+                const endAngle = ((index + 1) / totalSigns) * 2 * Math.PI;
 
-                const textArcRadius = 85
+                const textArcRadius = 85;
 
                 // Use cx, cy instead of 100, 100
-                const x1 = cx + textArcRadius * Math.cos(startAngle)
-                const y1 = cy + textArcRadius * Math.sin(startAngle)
-                const x2 = cx + textArcRadius * Math.cos(endAngle)
-                const y2 = cy + textArcRadius * Math.sin(endAngle)
+                const x1 = cx + textArcRadius * Math.cos(startAngle);
+                const y1 = cy + textArcRadius * Math.sin(startAngle);
+                const x2 = cx + textArcRadius * Math.cos(endAngle);
+                const y2 = cy + textArcRadius * Math.sin(endAngle);
 
-                const largeArcFlag = 0
+                const largeArcFlag = 0;
 
                 return (
                   <path
@@ -130,32 +145,32 @@ export default function Home() {
                     fill="none"
                     stroke="transparent"
                   />
-                )
+                );
               })}
             </defs>
 
             {zodiacSigns.map((sign, index) => {
-              const totalSigns = zodiacSigns.length
-              const angle = (index / totalSigns) * 2 * Math.PI
-              const nextAngle = ((index + 1) / totalSigns) * 2 * Math.PI
+              const totalSigns = zodiacSigns.length;
+              const angle = (index / totalSigns) * 2 * Math.PI;
+              const nextAngle = ((index + 1) / totalSigns) * 2 * Math.PI;
 
-              const outerRadius = 80
-              const innerRadius = 40
-              const textRadius = (outerRadius + innerRadius) / 2 + 5
+              const outerRadius = 80;
+              const innerRadius = 40;
+              const textRadius = (outerRadius + innerRadius) / 2 + 5;
 
               // Donut arcs
-              const x1 = cx + outerRadius * Math.cos(angle)
-              const y1 = cy + outerRadius * Math.sin(angle)
-              const x2 = cx + outerRadius * Math.cos(nextAngle)
-              const y2 = cy + outerRadius * Math.sin(nextAngle)
-              const x3 = cx + innerRadius * Math.cos(nextAngle)
-              const y3 = cy + innerRadius * Math.sin(nextAngle)
-              const x4 = cx + innerRadius * Math.cos(angle)
-              const y4 = cy + innerRadius * Math.sin(angle)
+              const x1 = cx + outerRadius * Math.cos(angle);
+              const y1 = cy + outerRadius * Math.sin(angle);
+              const x2 = cx + outerRadius * Math.cos(nextAngle);
+              const y2 = cy + outerRadius * Math.sin(nextAngle);
+              const x3 = cx + innerRadius * Math.cos(nextAngle);
+              const y3 = cy + innerRadius * Math.sin(nextAngle);
+              const x4 = cx + innerRadius * Math.cos(angle);
+              const y4 = cy + innerRadius * Math.sin(angle);
 
               // Symbol position
-              const textX = cx + textRadius * Math.cos((angle + nextAngle) / 2)
-              const textY = cy + textRadius * Math.sin((angle + nextAngle) / 2)
+              const textX = cx + textRadius * Math.cos((angle + nextAngle) / 2);
+              const textY = cy + textRadius * Math.sin((angle + nextAngle) / 2);
 
               return (
                 <g
@@ -191,12 +206,16 @@ export default function Home() {
 
                   {/* Zodiac Name (Warped on Outer Arc) */}
                   <text fill="white" fontSize="6.5">
-                    <textPath href={`#arc-${index}`} startOffset="50%" textAnchor="middle">
+                    <textPath
+                      href={`#arc-${index}`}
+                      startOffset="50%"
+                      textAnchor="middle"
+                    >
                       {sign.name}
                     </textPath>
                   </text>
                 </g>
-              )
+              );
             })}
           </svg>
 
@@ -212,14 +231,20 @@ export default function Home() {
         </motion.div>
 
         {/* Footer */}
-        <motion.footer 
+        <motion.footer
           className="text-center mt-12 text-blue-400/60 text-sm w-full"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.8, duration: 0.8 }}
         >
-          <p>Alignment of corporate stars may vary. Past performance is not indicative of future micromanagement.</p>
-          <p>Breaking the shackles of corporate imprisonment may result in benefitial side effects.</p>
+          <p>
+            Alignment of corporate stars may vary. Past performance is not
+            indicative of future micromanagement.
+          </p>
+          <p>
+            Breaking the shackles of corporate imprisonment may result in
+            benefitial side effects.
+          </p>
         </motion.footer>
       </div>
 
@@ -228,11 +253,11 @@ export default function Home() {
         ref={dialogRef}
         className="backdrop:bg-black/60 backdrop:backdrop-blur-sm bg-transparent p-0 rounded-xl max-w-2xl w-full mx-auto"
         onClick={(e) => {
-          if (e.target === dialogRef.current) closeHoroscope()
+          if (e.target === dialogRef.current) closeHoroscope();
         }}
       >
         {selectedSign && (
-          <motion.div 
+          <motion.div
             className="bg-[#1a1a3a] p-8 rounded-xl shadow-lg border border-blue-500/20 relative"
             initial={{ scale: 0.9, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -246,19 +271,25 @@ export default function Home() {
             </button>
             <div className="text-center mb-6">
               <span className="text-5xl block mb-3">
-                {zodiacSigns.find(s => s.name === selectedSign)?.symbol}
+                {zodiacSigns.find((s) => s.name === selectedSign)?.symbol}
               </span>
-              <h2 className="text-2xl font-bold text-blue-300">{selectedSign}</h2>
+              <h2 className="text-2xl font-bold text-blue-300">
+                {selectedSign}
+              </h2>
               <div className="text-sm text-blue-400 mt-1">
-                {zodiacSigns.find(s => s.name === selectedSign)?.period}
+                {zodiacSigns.find((s) => s.name === selectedSign)?.period}
               </div>
             </div>
             <p className="text-lg leading-relaxed text-blue-100">
-              {corporateHoroscopes[selectedSign as keyof typeof corporateHoroscopes]}
+              {
+                corporateHoroscopes[
+                  selectedSign as keyof typeof corporateHoroscopes
+                ]
+              }
             </p>
           </motion.div>
         )}
       </dialog>
     </main>
-  )
+  );
 }
