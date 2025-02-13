@@ -74,6 +74,16 @@ export default function Home() {
     <main className="min-h-screen text-blue-100 flex flex-col items-center justify-center p-8 relative">
       <StarryBackground />
 
+      {/* Sticky GIF */}
+      <motion.img
+        src="/chains.gif"
+        alt="Animated GIF"
+        className="fixed top-4 left-4 w-16 h-16 md:w-20 md:h-20 rounded-full object-cover shadow-lg z-50"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+      />
+
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-6xl mx-auto">
         {/* Header */}
@@ -98,16 +108,6 @@ export default function Home() {
               stakeholders
             </motion.p>
           </div>
-
-          {/* Circular GIF - Aligned to Right */}
-          <motion.img
-            src="/chains.gif"
-            alt="Animated GIF"
-            className="w-24 h-24 rounded-full object-cover shadow-lg"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
-          />
         </div>
         {/* Zodiac Donut Wheel */}
         <motion.div
