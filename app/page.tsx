@@ -66,26 +66,38 @@ export default function Home() {
       {/* Content with higher z-index */}
       <div className="relative z-10 flex flex-col items-center justify-center w-full max-w-6xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-12">
-          <motion.h1 
-            className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-transparent bg-clip-text mb-4"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            ASTRO SLAVE
-          </motion.h1>
-          <motion.p 
-            className="text-blue-300 text-xl"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
-          >
-            Your corporate destiny, written by spiritually ascended stakeholders
-          </motion.p>
-        </div>
+  <div className="flex items-center justify-between w-full">
+    {/* Text Content - Centered */}
+    <div className="flex flex-col items-center text-center max-w-3xl mx-auto">
+      <motion.h1 
+        className="text-6xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 text-transparent bg-clip-text mb-4"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: "easeOut" }}
+      >
+        ASTRO SLAVE
+      </motion.h1>
+      <motion.p 
+        className="text-blue-300 text-xl"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+      >
+        Your corporate destiny, written by spiritually ascended stakeholders
+      </motion.p>
+    </div>
 
-        {/* Zodiac Donut Wheel */}
+    {/* Circular GIF - Aligned to Right */}
+    <motion.img 
+      src="/chains.gif" 
+      alt="Animated GIF"
+      className="w-24 h-24 rounded-full object-cover shadow-lg"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ delay: 0.5, duration: 0.8, ease: "easeOut" }}
+    />
+  </div>
+          {/* Zodiac Donut Wheel */}
         <motion.div 
           className="relative mx-auto"
           style={{ width: '400px', height: '400px' }}
