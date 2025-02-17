@@ -9,7 +9,7 @@ This is a sample application showcasing the integration of Next.js with Tailwind
 - DaisyUI components
 - Dark/Light theme toggle
 - Responsive design
-- TypeScript support
+- TS support
 
 ## Getting Started
 
