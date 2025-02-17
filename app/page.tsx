@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import StarryBackground from "./components/StarryBackground";
+import { getHoroscopes } from "./actions";
 
 const zodiacSigns = [
   { name: "Aries", symbol: "♈", period: "Mar 21 - Apr 19" },
@@ -19,35 +20,65 @@ const zodiacSigns = [
   { name: "Pisces", symbol: "♓", period: "Feb 19 - Mar 20" },
 ];
 
-const corporateHoroscopes = {
-  Aries:
-    "Your assertiveness will be mistaken for 'not being a team player'. Mercury retrograde suggests it's time to write more emails with 'per my last email' to assert dominance.",
-  Taurus:
-    "The alignment of Venus indicates your standing desk budget request will finally be approved. Unfortunately, Saturn's position means it's actually a cardboard box.",
-  Gemini:
-    "Your multitasking skills will peak this week - perfect timing for when your boss assigns you three people's jobs with no pay increase.",
-  Cancer:
-    "The moon's position suggests excellent emotional intelligence this week. Use it to decode what 'let's circle back' really means in your meetings.",
-  Leo: "Jupiter aligns perfectly for leadership opportunities! Translation: You'll be voluntold to lead the office birthday committee.",
-  Virgo:
-    "Your attention to detail will save a major project! But Mars in retrograde means someone else will take credit in the all-hands meeting.",
-  Libra:
-    "The stars suggest great balance this week - between your actual job and your side hustle because inflation is hitting hard.",
-  Scorpio:
-    "Your mysterious aura will serve you well when you need to hide from impromptu Zoom calls. Pro tip: 'Internet issues' is still a classic.",
-  Sagittarius:
-    "Your optimism will be tested when you realize 'unlimited PTO' actually means 'never take a vacation'.",
-  Capricorn:
-    "Your career path is clear as day: straight up the corporate ladder... Oh wait, that's just the emergency exit sign.",
-  Aquarius:
-    "Innovation is your strength this week! Perfect timing for suggesting revolutionary ideas that will be shut down for being 'too outside the box'.",
-  Pisces:
-    "Your intuition is strong - you'll sense a team-building exercise coming. Quick, schedule a dentist appointment!",
-};
+// const corporateHoroscopes = {
+//   Aries:
+//     "Your assertiveness will be mistaken for 'not being a team player'. Mercury retrograde suggests it's time to write more emails with 'per my last email' to assert dominance.",
+//   Taurus:
+//     "The alignment of Venus indicates your standing desk budget request will finally be approved. Unfortunately, Saturn's position means it's actually a cardboard box.",
+//   Gemini:
+//     "Your multitasking skills will peak this week - perfect timing for when your boss assigns you three people's jobs with no pay increase.",
+//   Cancer:
+//     "The moon's position suggests excellent emotional intelligence this week. Use it to decode what 'let's circle back' really means in your meetings.",
+//   Leo: "Jupiter aligns perfectly for leadership opportunities! Translation: You'll be voluntold to lead the office birthday committee.",
+//   Virgo:
+//     "Your attention to detail will save a major project! But Mars in retrograde means someone else will take credit in the all-hands meeting.",
+//   Libra:
+//     "The stars suggest great balance this week - between your actual job and your side hustle because inflation is hitting hard.",
+//   Scorpio:
+//     "Your mysterious aura will serve you well when you need to hide from impromptu Zoom calls. Pro tip: 'Internet issues' is still a classic.",
+//   Sagittarius:
+//     "Your optimism will be tested when you realize 'unlimited PTO' actually means 'never take a vacation'.",
+//   Capricorn:
+//     "Your career path is clear as day: straight up the corporate ladder... Oh wait, that's just the emergency exit sign.",
+//   Aquarius:
+//     "Innovation is your strength this week! Perfect timing for suggesting revolutionary ideas that will be shut down for being 'too outside the box'.",
+//   Pisces:
+//     "Your intuition is strong - you'll sense a team-building exercise coming. Quick, schedule a dentist appointment!",
+// };
 
 export default function Home() {
   const [selectedSign, setSelectedSign] = useState<string | null>(null);
   const dialogRef = useRef<HTMLDialogElement>(null);
+
+  const [horoscopes, setHoroscopes] = useState<HoroscopeRow[]>([]);
+
+  const isInitialLoadRef = useRef(true);
+  useEffect(() => {
+    const fetchHoroscopes = async () => {
+      if (isInitialLoadRef.current) {
+        isInitialLoadRef.current = false;
+        const horoscopes = await getHoroscopes();
+        setHoroscopes(horoscopes);
+        console.log("Horoscopes", horoscopes);
+      }
+    };
+
+    fetchHoroscopes();
+
+    return () => {
+      isInitialLoadRef.current = true;
+    };
+  }, []);
+
+  const corporateHoroscopes = useMemo(() => {
+    const horoscopeMap: Record<string, string> = {};
+    horoscopes.forEach((horoscope) => {
+      // need to make the first char uppercase
+      const horoscopeName = horoscope.id.charAt(0).toUpperCase() + horoscope.id.slice(1);
+      horoscopeMap[horoscopeName] = horoscope.description;
+    });
+    return horoscopeMap;
+  }, [horoscopes]);
 
   const openHoroscope = (sign: string) => {
     setSelectedSign(sign);
