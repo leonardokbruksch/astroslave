@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion } from "framer-motion";
 import StarryBackground from "./components/StarryBackground";
 import { getHoroscopes } from "./actions";
+import { HoroscopeRow } from "./types";
 
 const zodiacSigns = [
   { name: "Aries", symbol: "♈", period: "Mar 21 - Apr 19" },
@@ -65,9 +66,9 @@ export default function Home() {
 
     fetchHoroscopes();
 
-    return () => {
-      isInitialLoadRef.current = true;
-    };
+    // return () => {
+    //   isInitialLoadRef.current = true;
+    // };
   }, []);
 
   const corporateHoroscopes = useMemo(() => {
